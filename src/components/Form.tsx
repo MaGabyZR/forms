@@ -1,16 +1,25 @@
 import React, { FormEvent, useRef, useState } from "react";
+import { FieldValues, useForm } from "react-hook-form";
 
 const Form = () => {
-  //use the state hook to create an object.
+  //Call React-hook-form to get a form object.
+  const { register, handleSubmit } = useForm();
+  //handle data submission, and send it to the server. For now just log it on the console.
+  const onSubmit = (data: FieldValues) => console.log(data);
+  //see all the methods it has
+  //console.log(form);
+
+  /*   //use the state hook to create an object. By using React-hook-form you no longer need to create a person object.
   const [person, setPerson] = useState({
     name: "",
     age: "",
-  });
+  }); */
 
-  const handleSubmit = (event: FormEvent) => {
+  /*  This handler is no longer needed, when you use React-hook-form. 
+    const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     console.log(person);
-  };
+  }; */
   /*   //Accesing Input fields. Replaced by using the State Hook instead, above. 
   const nameRef = useRef<HTMLInputElement>(null);
   const ageRef = useRef<HTMLInputElement>(null);
@@ -24,17 +33,18 @@ const Form = () => {
     }; */
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
         <label htmlFor="name" className="form-label">
           Name
         </label>
         <input
-          //every time the user types a keystroke, we update the name of the person.
+          /*           //every time the user types a keystroke, we update the name of the person. Replaced by React-hook-form
           onChange={(event) =>
             setPerson({ ...person, name: event.target.value })
           }
-          value={person.name}
+          value={person.name} */
+          {...register("name")}
           id="name"
           type="text"
           className="form-control"
@@ -45,11 +55,12 @@ const Form = () => {
           Age
         </label>
         <input
-          //every time the user types a keystroke, we update the age of the person.
+          /*           //every time the user types a keystroke, we update the age of the person.Replaced by React-hook-form.
           onChange={(event) =>
             setPerson({ ...person, age: event.target.value })
           }
-          value={person.age}
+          value={person.age} */
+          {...register("age")}
           id="age"
           type="number"
           className="form-control"
