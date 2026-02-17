@@ -25,7 +25,7 @@ const Form = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors }, //nested destructuring in JS.
+    formState: { errors, isValid }, //nested destructuring in JS.
   } = useForm<FormData>({ resolver: zodResolver(schema) }); //Call Zod when calling the form hook.
   //handle data submission, and send it to the server. For now just log it on the console.
   const onSubmit = (data: FieldValues) => console.log(data);
@@ -91,7 +91,7 @@ const Form = () => {
         />
         {errors.age && <p className="text-danger">{errors.age.message}</p>}
       </div>
-      <button className="btn btn-primary" type="submit">
+      <button disabled={!isValid} className="btn btn-primary" type="submit">
         Submit
       </button>
     </form>
