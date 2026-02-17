@@ -1,9 +1,19 @@
 import React, { FormEvent, useRef, useState } from "react";
 import { FieldValues, useForm } from "react-hook-form";
 
+//Get autocomplition whe writing code, define the shape of this Form.
+interface FormData {
+  name: string;
+  age: number;
+}
+
 const Form = () => {
   //Call React-hook-form to get a form object.
-  const { register, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }, //nested destructuring in JS.
+  } = useForm<FormData>();
   //handle data submission, and send it to the server. For now just log it on the console.
   const onSubmit = (data: FieldValues) => console.log(data);
   //see all the methods it has
@@ -44,11 +54,19 @@ const Form = () => {
             setPerson({ ...person, name: event.target.value })
           }
           value={person.name} */
-          {...register("name")}
+          {...register("name", { required: true, minLength: 3 })}
           id="name"
           type="text"
           className="form-control"
         />
+        {errors.name?.type === "required" && (
+          <p className="text-danger">The name field is required.</p>
+        )}
+        {errors.name?.type === "minLength" && (
+          <p className="text-danger">
+            The name must be at least three characters.
+          </p>
+        )}
       </div>
       <div className="mb-3">
         <label htmlFor="age" className="form-label">
